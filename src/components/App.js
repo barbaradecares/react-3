@@ -1,41 +1,46 @@
-import React, { Component } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom';
-import Navbar from './Navbar'
-import Home from './Home'
-import RecipePage from './RecipePage'
-
+import React, { Component } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import Navbar from "./Navbar";
+import Home from "./Home";
+import RecipePage from "./RecipePage";
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.state = {}
+    this.state = {};
   }
 
   render() {
     const HomeRoute = ({ match }) => (
-      <Home />
-    )
+      <Home searchString={match.params.searchString} />
+    );
 
-    const RecipePageRoute = () => <RecipePage />
+    const RecipePageRoute = ({ location }) => (
+      <RecipePage state={location.state} />
+    );
 
     return (
       <div className="App">
-        <Route exact path="/search/:searchString?" children={({ match }) => (
-          <Navbar
-            searchString={match ? match.params.searchString || '' : ''}
-          />
-        )}/>
-    
+        <Route
+          exact
+          path="/search/:searchString?"
+          children={({ match }) => (
+            <Navbar
+              searchString={match ? match.params.searchString || "" : ""}
+            />
+          )}
+        />
+
         <div className="container mt-10">
           <Switch>
-            <Route exact path="/recipe" component={RecipePageRoute}/>
-            <Route path="/search/:searchString?" component={HomeRoute}/>
+            <Route exact path="/recipe" component={RecipePageRoute} />
+            <Route path="/search/:searchString?" component={HomeRoute} />
             <Redirect to="/search" />
           </Switch>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default App
+export default App;
